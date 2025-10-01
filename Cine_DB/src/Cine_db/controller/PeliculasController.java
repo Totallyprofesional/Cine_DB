@@ -6,7 +6,7 @@ import Cine_db.view.PeliculasFormView;
 import Cine_db.view.PeliculasListView;
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.List; 
 
 public class PeliculasController {
     

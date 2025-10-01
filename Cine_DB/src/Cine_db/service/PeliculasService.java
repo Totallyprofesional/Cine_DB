@@ -6,18 +6,18 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException; 
-import java.sql.Types;
+import java.sql.Types; 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PeliculasService {
-     
+public class PeliculasService {  
+      
     public List<Peliculas> listar() throws SQLException {
         List<Peliculas> lista = new ArrayList<>();
 
         String call = "{ CALL sp_listar_peliculas() }";
 
-        try (Connection con = DataCon.getConnection();
+        try (Connection con = DataCon.getConnection(); 
             CallableStatement cs = con.prepareCall(call);
             ResultSet rs = cs.executeQuery()) {
 

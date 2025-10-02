@@ -51,7 +51,7 @@ public class PeliculasDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
 
-                if (rs.next()) {
+                if (rs.next()) { 
 
                     return mapear(rs);
                 }

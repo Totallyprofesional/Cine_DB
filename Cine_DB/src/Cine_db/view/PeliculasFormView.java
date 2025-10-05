@@ -1,7 +1,7 @@
 
 package Cine_db.view;
 
-import Cine_db.db.model.Peliculas;
+import Cine_db.database.model.Peliculas;
 import javax.swing.*;
 import java.awt.*; 
 import java.util.Optional;

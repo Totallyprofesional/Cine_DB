@@ -4,8 +4,8 @@ package Cine_db.dao;
 import java.sql.*;
 import java.util.ArrayList; 
 import java.util.List; 
-import Cine_db.db.DataCon; 
-import Cine_db.db.model.Peliculas;
+import Cine_db.database.DataCon; 
+import Cine_db.database.model.Peliculas;
 
 public class PeliculasDAO { 
     
@@ -126,7 +126,7 @@ public class PeliculasDAO {
                     total += ps.executeUpdate();
                 }
 
-                con.commit(); 
+                con.commit();  
                 return total;
 
             } catch (SQLException ex) {
@@ -149,7 +149,7 @@ public class PeliculasDAO {
                 rs.getString("director"),
                 rs.getString("genero"),
                 (Integer) rs.getObject("anio"),
-                (Integer) rs.getObject("horas_estimadas")
+                (Integer) rs.getObject("duracion")
         );
     }
 }

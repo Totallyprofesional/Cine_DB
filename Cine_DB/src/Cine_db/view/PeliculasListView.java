@@ -1,67 +1,103 @@
 
 package Cine_db.view;
- 
-import Cine_db.db.model.Peliculas;
+
+import Cine_db.database.model.Peliculas;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
+import javax.swing.table.TableRowSorter;
+import java.awt.*; 
+import java.util.List; 
 
 public class PeliculasListView extends JPanel {
-    private final DefaultTableModel model = new DefaultTableModel(
-        new Object[]{"Id", "Titulo", "Director", "Genero", "Anio", "Duracion"}, 0) {
+    private final DefaultTableModel model;
+    private final JTable tabla; 
+    private final TableRowSorter<DefaultTableModel> sorter;
 
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
-    private final JTable table = new JTable(model);
-    private final JButton btnRefrescar = new JButton("Refrescar");
+    private final JComboBox<String> cbGenero;
+    private final JTextField txtAnioMin, txtAnioMax;
+    private final JButton btnFiltrar, btnLimpiar, btnOrdenarGenero, btnOrdenarAnio, btnRefrescar;
 
-    public PeliculasListView() {  
+    public PeliculasListView() {
+        setLayout(new BorderLayout(5,5));
 
-        setLayout(new BorderLayout(8, 8));
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        model = new DefaultTableModel(new Object[]{"ID","Título","Director","Género","Año","Duración"}, 0);
+        tabla = new JTable(model);
+        sorter = new TableRowSorter<>(model);
+        tabla.setRowSorter(sorter);
+        add(new JScrollPane(tabla), BorderLayout.CENTER);
 
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        top.add(btnRefrescar);
-        add(top, BorderLayout.NORTH);
+        JPanel filtros = new JPanel(new FlowLayout(FlowLayout.LEFT, 5,5));
+        cbGenero = new JComboBox<>(new String[]{"(Todos)", "Comedia","Drama","Accion", "Fantasia", "Musical","Romance"});
+        txtAnioMin = new JTextField(5);
+        txtAnioMax = new JTextField(5); 
+        btnFiltrar = new JButton("Filtrar");
+        btnLimpiar = new JButton("Limpiar");
+        btnRefrescar = new JButton ("Refrescar");
+        filtros.add(new JLabel("Género:")); filtros.add(cbGenero);
+        filtros.add(new JLabel("Año mín:")); filtros.add(txtAnioMin);
+        filtros.add(new JLabel("Año máx:")); filtros.add(txtAnioMax);
+        filtros.add(btnFiltrar); filtros.add(btnLimpiar);
+        add(filtros, BorderLayout.NORTH);
+
+        JPanel orden = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        btnOrdenarGenero = new JButton("Ordenar por Género");
+        btnOrdenarAnio = new JButton("Ordenar por Año");
+        orden.add(btnOrdenarGenero); orden.add(btnOrdenarAnio);
+        add(orden, BorderLayout.SOUTH);
     }
-
-    public void setData(List<Peliculas> peliculas) {
-
+     
+    public void setData(List<Cine_db.database.model.Peliculas> peliculas) {
         model.setRowCount(0);
-
-        for (Peliculas p : peliculas) {
- 
+        for (Cine_db.database.model.Peliculas p : peliculas) {
             model.addRow(new Object[]{
-                p.getId(), p.getTitulo(), p.getDirector(), p.getGenero(), p.getAnio(), p.getDuracion()
-            });
+                p.getId(), p.getTitulo(), p.getDirector(),
+                p.getGenero(), p.getAnio(), p.getDuracion()  
+            }); 
         }
     }
-
-    public Integer getSelectedId() {
-
-        int row = table.getSelectedRow();
-
-        if (row == -1) {
-
-            return null;
-        }
-
-        Object val = model.getValueAt(row, 0);
-        return (val == null) ? null : Integer.parseInt(val.toString());
+ 
+    public DefaultTableModel getModel() {
+        return model;
     }
 
-    public JTable getTable() {
-
-        return table; 
+    public JTable getTabla() {
+        return tabla;
+    }
+ 
+    public TableRowSorter<DefaultTableModel> getSorter() {
+        return sorter;
     }
 
-    public JButton getBtnRefrescar() {
-
-        return btnRefrescar;
+    public JComboBox<String> getCbGenero() {
+        return cbGenero;
     }
+
+    public JTextField getTxtAnioMin() {
+        return txtAnioMin;
+    }
+
+    public JTextField getTxtAnioMax() {
+        return txtAnioMax;
+    }
+
+    public JButton getBtnFiltrar() {
+        return btnFiltrar;
+    }
+
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
+    public JButton getBtnOrdenarGenero() {
+        return btnOrdenarGenero;
+    }
+
+    public JButton getBtnOrdenarAnio() {
+        return btnOrdenarAnio;
+    }
+    
+    public JButton getBtnRefrescar() { 
+        return btnRefrescar; 
+    }
+
 }

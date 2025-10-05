@@ -1,5 +1,6 @@
 
 package Cine_db.view;
+ 
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +11,7 @@ public class MainWindow extends JFrame {
 
     public MainWindow(PeliculasListView listView, PeliculasFormView formView) {
         
-        super("GamesApp - Gestión de Peliculas");
+        super("Gestión de Peliculas");
         this.listView = listView;
         this.formView = formView; 
  
@@ -23,16 +24,14 @@ public class MainWindow extends JFrame {
         add(split, BorderLayout.CENTER);
 
         setSize(900, 700);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); 
     }
 
     public PeliculasListView getListView() {
-        
         return listView;
     }
 
     public PeliculasFormView getFormView() {
-        
         return formView;
     }
    

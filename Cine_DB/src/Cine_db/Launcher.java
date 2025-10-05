@@ -1,14 +1,15 @@
 
-package cine_db;
+package Cine_db; 
 
 import Cine_db.controller.PeliculasController;
 import Cine_db.dao.PeliculasDAO;
 import Cine_db.service.PeliculasService;
-import Cine_db.view.MainWindow;
-import Cine_db.view.PeliculasFormView;
+import Cine_db.view.MainWindow; 
+import Cine_db.view.PeliculasFormView; 
 import Cine_db.view.PeliculasListView; 
 import javax.swing.*;
 
+    
 public class Launcher { 
  
     public static void main(String[] args) {

@@ -1,22 +1,22 @@
 package Cine_db.service;
 
 import Cine_db.dao.PeliculasDAO;
-import Cine_db.db.DataCon;
-import Cine_db.db.model.Peliculas;
+import Cine_db.database.DataCon;
+import Cine_db.database.model.Peliculas;
 import java.sql.CallableStatement; 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException; 
 import java.sql.Types; 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
  
-public class PeliculasService {  
+public class PeliculasService {   
     private PeliculasDAO dao;
 
     public PeliculasService(PeliculasDAO dao) {
         this.dao = dao;
-    }
+    } 
     
     public List<Peliculas> listar() throws SQLException {
         List<Peliculas> lista = new ArrayList<>();

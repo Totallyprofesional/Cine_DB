@@ -1,71 +1,95 @@
 
-CREATE DATABASE IF NOT EXISTS cine_db 
+CREATE DATABASE IF NOT EXISTS cine_db
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
-USE cine_db;
- 
-CREATE TABLE IF NOT EXISTS cartelera (
+USE cine_db; 
+
+CREATE TABLE IF NOT EXISTS peliculas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(150) NOT NULL,
     director VARCHAR(50) NOT NULL,
+    genero ENUM('Comedia','Drama','Accion','Fantasia','Musical','Romance') NOT NULL,
     anio INT NOT NULL,
     duracion INT NOT NULL,
-    genero ENUM('Comedia', 'Drama', 'Accion', 'Fantasia', 'Musical', 'Romance') NOT NULL,
     UNIQUE KEY uk_titulo_anio (titulo, anio)
 ) CHARACTER SET utf8mb4 
-  COLLATE utf8mb4_unicode_ci; 
+  COLLATE utf8mb4_unicode_ci;
 
-INSERT INTO cartelera (titulo, director, anio, duracion, genero) VALUES
-('Amelie', 'Jean-Pierre Jeunet', 2001, 122, 'Comedia'),
-('El Señor de los Anillos', 'Peter Jackson', 2001, 178, 'Fantasia')
+INSERT INTO peliculas (titulo, director, genero, anio, duracion) VALUES
+('Amelie', 'Jean-Pierre Jeunet', 'Comedia', 2001, 122),
+('El Señor de los Anillos', 'Peter Jackson', 'Fantasia', 2001, 178)
 ON DUPLICATE KEY UPDATE
-director=VALUES(director), anio=VALUES(anio), duracion=VALUES(duracion), genero=VALUES(genero);
+director = VALUES(director), genero = VALUES(genero), anio = VALUES(anio), duracion = VALUES(duracion);
 
--- Mostrar Lista
-DELIMITER // 
-CREATE PROCEDURE sp_listar_cartelera()
-BEGIN
-  SELECT id, titulo, director, anio, duracion, genero FROM cartelera ORDER BY id;
-END //
-DELIMITER ; 
-
--- Agregar
+-- Listar
 DELIMITER //
-CREATE PROCEDURE sp_insertar_pelicula(
-  IN p_titulo VARCHAR(150),
-  IN p_director VARCHAR(50), 
-  IN p_anio INT,
-  IN p_duracion INT,
-  IN p_genero ENUM('Comedia', 'Drama', 'Accion', 'Fantasia', 'Musical', 'Romance'),
-  OUT p_id INT
+CREATE PROCEDURE sp_listar_peliculas()
+BEGIN
+    SELECT id, titulo, director, genero, anio, duracion FROM peliculas ORDER BY id;
+END // 
+DELIMITER ;
+
+-- Agregar  
+DELIMITER //
+CREATE PROCEDURE sp_insertar_peliculas(
+    IN p_titulo VARCHAR(150),
+    IN p_director VARCHAR(50),
+    IN p_genero ENUM('Comedia','Drama','Accion','Fantasia','Musical','Romance'),
+    IN p_anio INT,
+    IN p_duracion INT, 
+    OUT p_id INT
 )
 BEGIN
-  INSERT INTO cartelera (titulo, director, anio, duracion, genero)
-  VALUES (p_titulo, p_director, p_anio, p_duracion, p_genero);
-  SET p_id = LAST_INSERT_ID();
+    INSERT INTO peliculas (titulo, director, genero, anio, duracion)
+    VALUES (p_titulo, p_director, p_genero, p_anio, p_duracion);
+    SET p_id = LAST_INSERT_ID();
 END //
-DELIMITER ; 
+DELIMITER ;   
  
+-- Modificar
+DELIMITER //
+CREATE PROCEDURE sp_modificar_peliculas(
+    IN p_id INT,
+    IN p_titulo VARCHAR(150),
+    IN p_director VARCHAR(50),
+    IN p_genero ENUM('Comedia','Drama','Accion','Fantasia','Musical','Romance'),
+    IN p_anio INT,
+    IN p_duracion INT,
+    OUT p_rows INT 
+) 
+BEGIN
+    UPDATE peliculas
+    SET titulo = p_titulo,
+        director = p_director,
+        genero = p_genero,
+        anio = p_anio,
+        duracion = p_duracion 
+    WHERE id = p_id;
+    SET p_rows = ROW_COUNT();
+END //
+DELIMITER ;
+
 -- Buscar
 DELIMITER //
 CREATE PROCEDURE sp_obtener_titulo_por_id(
-  IN  p_id INT,
-  OUT p_titulo VARCHAR(150)
+    IN p_id INT,
+    OUT p_titulo VARCHAR(150)
 )
 BEGIN
-  SELECT titulo INTO p_titulo FROM cartelera WHERE id = p_id;
+    SELECT titulo INTO p_titulo FROM peliculas WHERE id = p_id;
 END //
 DELIMITER ;
 
 -- Eliminar
 DELIMITER //
-CREATE PROCEDURE sp_eliminar_pelicula(
-  IN  p_id INT,
-  OUT p_rows INT
+CREATE PROCEDURE sp_eliminar_peliculas(
+    IN p_id INT,
+    OUT p_rows INT
 )
 BEGIN
-  DELETE FROM cartelera WHERE id = p_id;
-  SET p_rows = ROW_COUNT();
+    DELETE FROM peliculas WHERE id = p_id;
+    SET p_rows = ROW_COUNT();
 END //
-DELIMITER ;
+DELIMITER ; 
+
